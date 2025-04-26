@@ -10,12 +10,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.xpoinm.xpoinmmod.init.Registration;
 
 @Mod("xpoinmmod")
-public class xpoinmmod {
+public class Xpoinmmod { // Исправлено на CamelCase (начинается с заглавной буквы)
     public static final String MOD_ID = "xpoinmmod";
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
-    public xpoinmmod() {
+    public Xpoinmmod() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(bus);
         Registration.init();

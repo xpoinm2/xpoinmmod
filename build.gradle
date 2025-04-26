@@ -135,7 +135,9 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Для сетевых пакетов
+    implementation 'net.minecraftforge:forgelin:1.7.0'
     implementation 'net.minecraftforge:eventbus:5.0.3'
+    implementation "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency

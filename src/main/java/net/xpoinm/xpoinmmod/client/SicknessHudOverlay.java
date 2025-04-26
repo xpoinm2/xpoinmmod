@@ -9,9 +9,9 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.xpoinm.xpoinmmod.capability.ModCapabilities;
-import net.xpoinm.xpoinmmod.xpoinmmod;
+import net.xpoinm.xpoinmmod.Xpoinmmod;
 
-@Mod.EventBusSubscriber(modid = xpoinmmod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Xpoinmmod.MOD_ID) // Исправлено
 public class SicknessHudOverlay {
     private static final int BAR_WIDTH = 81;
     private static final int BAR_HEIGHT = 9;

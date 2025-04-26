@@ -14,9 +14,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.xpoinm.xpoinmmod.network.NetworkHandler;
 import net.xpoinm.xpoinmmod.network.SicknessSyncPacket;
-import net.xpoinm.xpoinmmod.xpoinmmod;
+import net.xpoinm.xpoinmmod.Xpoinmmod;
 
-@Mod.EventBusSubscriber(modid = xpoinmmod.MOD_ID)
+@Mod.EventBusSubscriber(modid = Xpoinmmod.MOD_ID)
 public class ModCapabilities {
     public static final Capability<SicknessCapability> SICKNESS =
             CapabilityManager.get(new CapabilityToken<>() {});
@@ -29,7 +29,7 @@ public class ModCapabilities {
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             event.addCapability(
-                    new ResourceLocation(xpoinmmod.MOD_ID, "sickness"),
+                    new ResourceLocation(Xpoinmmod.MOD_ID, "sickness"),
                     new ICapabilityProvider() {
                         final LazyOptional<SicknessCapability> optional =
                                 LazyOptional.of(SicknessCapability::new);
