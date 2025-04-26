@@ -1,23 +1,30 @@
 package net.xpoinm.xpoinmmod;
 
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.xpoinm.xpoinmmod.init.Registration;
+import net.xpoinm.xpoinmmod.network.NetworkHandler;
 
-@Mod("xpoinmmod")
-public class Xpoinmmod { // Исправлено на CamelCase (начинается с заглавной буквы)
+@Mod(Xpoinmmod.MOD_ID)
+public class Xpoinmmod {
     public static final String MOD_ID = "xpoinmmod";
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
 
     public Xpoinmmod() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ITEMS.register(bus);
-        Registration.init();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
+
+        // Регистрация всех компонентов
+        Registration.init(modEventBus);
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            NetworkHandler.register(); // Регистрация пакетов
+        });
     }
 }

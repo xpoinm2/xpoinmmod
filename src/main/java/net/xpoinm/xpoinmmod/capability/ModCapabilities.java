@@ -21,11 +21,6 @@ public class ModCapabilities {
     public static final Capability<SicknessCapability> SICKNESS = CapabilityManager.get(new CapabilityToken<>() {});
 
     @SubscribeEvent
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(SicknessCapability.class);
-    }
-
-    @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             event.addCapability(
@@ -37,13 +32,12 @@ public class ModCapabilities {
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (event.isWasDeath()) {
-            event.getOriginal().getCapability(SICKNESS).ifPresent(oldStore -> {
-                event.getPlayer().getCapability(SICKNESS).ifPresent(newStore -> {
-                    newStore.copyFrom(oldStore);
-                });
+        event.getOriginal().getCapability(SICKNESS).ifPresent(oldStore -> {
+            event.getPlayer().getCapability(SICKNESS).ifPresent(newStore -> {
+                newStore.copyFrom(oldStore);
+                syncSickness(event.getPlayer(), newStore.getSickness()); // Добавлена синхронизация
             });
-        }
+        });
     }
 
     public static void syncSickness(Player player, float sickness) {
