@@ -1,14 +1,17 @@
 package net.xpoinm.xpoinmmod.init;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.xpoinm.xpoinmmod.capability.ModCapabilities;
-import net.xpoinm.xpoinmmod.client.SicknessHudOverlay;
-import net.xpoinm.xpoinmmod.network.NetworkHandler;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Registration {
     public static void init() {
-        ModItems.register();
-        ModCapabilities.register();
-        NetworkHandler.register();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        // Регистрация предметов
+        ModItems.register(modEventBus);
+
+        // Регистрация других элементов мода...
     }
 }
