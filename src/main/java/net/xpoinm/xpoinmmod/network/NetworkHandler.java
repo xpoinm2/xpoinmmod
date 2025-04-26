@@ -20,12 +20,12 @@ public class NetworkHandler {
         int id = 0;
         INSTANCE.registerMessage(id++, SicknessSyncPacket.class,
                 SicknessSyncPacket::encode,
-                SicknessSyncPacket::new,
+                SicknessSyncPacket::decode,
                 SicknessSyncPacket::handle);
 
         INSTANCE.registerMessage(id++, ThirstOverlayPacket.class,
                 ThirstOverlayPacket::encode,
-                ThirstOverlayPacket::new,
+                SicknessSyncPacket::decode,
                 ThirstOverlayPacket::handle);
     }
 }

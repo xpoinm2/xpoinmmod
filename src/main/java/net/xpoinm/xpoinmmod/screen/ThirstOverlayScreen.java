@@ -29,7 +29,7 @@ public class ThirstOverlayScreen extends Screen {
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
-        minecraft.getTextureManager().bind(TEXTURE);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (this.width - 256) / 2;
         int y = (this.height - 256) / 2;
         this.blit(poseStack, x, y, 0, 0, 256, 256, 256, 256);

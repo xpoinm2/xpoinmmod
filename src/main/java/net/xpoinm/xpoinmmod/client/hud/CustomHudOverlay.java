@@ -11,9 +11,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.xpoinm.xpoinmmod.Xpoinmmod;
-import net.xpoinm.xpoinmmod.capabilities.ThirstProvider;
-import net.xpoinm.xpoinmmod.capabilities.DiseaseProvider;
-import net.xpoinm.xpoinmmod.capabilities.FatigueProvider;
+import net.xpoinm.xpoinmmod.capability.ThirstProvider;
+import net.xpoinm.xpoinmmod.capability.DiseaseProvider;
+import net.xpoinm.xpoinmmod.capability.FatigueProvider;
 
 @Mod.EventBusSubscriber(modid = Xpoinmmod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CustomHudOverlay {

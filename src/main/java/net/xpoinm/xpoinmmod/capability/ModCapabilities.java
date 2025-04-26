@@ -21,27 +21,22 @@ public class ModCapabilities {
     public static final Capability<SicknessCapability> SICKNESS = CapabilityManager.get(new CapabilityToken<>() {});
 
     @SubscribeEvent
-    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof Player) {
-            event.addCapability(
-                    new ResourceLocation(Xpoinmmod.MOD_ID, "sickness"),
-                    new SicknessProvider()
-            );
-        }
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(SicknessCapability.class);
     }
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         event.getOriginal().getCapability(SICKNESS).ifPresent(oldStore -> {
-            event.getPlayer().getCapability(SICKNESS).ifPresent(newStore -> {
+            event.getEntity().getCapability(SICKNESS).ifPresent(newStore -> {
                 newStore.copyFrom(oldStore);
-                syncSickness(event.getPlayer(), newStore.getSickness()); // Добавлена синхронизация
+                syncSickness(event.getEntity(), newStore.getSickness()); // Добавлена синхронизация
             });
         });
     }
 
     public static void syncSickness(Player player, float sickness) {
-        if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+        if (!player.getLevel().isClientSide && player instanceof ServerPlayer serverPlayer) {
             NetworkHandler.INSTANCE.send(
                     PacketDistributor.PLAYER.with(() -> serverPlayer),
                     new SicknessSyncPacket(sickness)

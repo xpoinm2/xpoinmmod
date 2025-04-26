@@ -1,8 +1,8 @@
 package net.xpoinm.xpoinmmod.capability;
 
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;

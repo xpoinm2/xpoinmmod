@@ -1,5 +1,7 @@
 package net.xpoinm.xpoinmmod.handler;
 
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.api.distmarker.Dist;

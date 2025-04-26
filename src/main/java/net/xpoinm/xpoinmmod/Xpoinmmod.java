@@ -14,13 +14,9 @@ public class Xpoinmmod {
 
     public Xpoinmmod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        modEventBus.addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.register(this);
-
-        // Регистрация всех компонентов
-        Registration.init(modEventBus);
+        Registration.init(modEventBus); // Теперь принимает IEventBus
     }
+}
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {

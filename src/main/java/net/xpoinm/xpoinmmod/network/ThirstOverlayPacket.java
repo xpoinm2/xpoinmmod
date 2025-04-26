@@ -9,6 +9,7 @@ import net.xpoinm.xpoinmmod.capability.FatigueProvider;
 import net.xpoinm.xpoinmmod.capability.DiseaseProvider;
 import net.xpoinm.xpoinmmod.capability.ThirstProvider;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ThirstOverlayPacket {
@@ -34,6 +35,14 @@ public class ThirstOverlayPacket {
         buf.writeFloat(fatigue);
     }
 
+    public void encode(FriendlyByteBuf buffer) {
+        buffer.writeFloat(thirst);
+        buffer.writeFloat(disease);
+    }
+
+    public static ThirstOverlayPacket decode(FriendlyByteBuf buffer) {
+        return new ThirstOverlayPacket(buffer.readFloat(), buffer.readFloat());
+    }
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
