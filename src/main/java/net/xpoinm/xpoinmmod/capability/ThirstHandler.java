@@ -1,35 +1,38 @@
 package net.xpoinm.xpoinmmod.capability;
 
-import net.minecraft.nbt.FloatTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class ThirstHandler implements INBTSerializable<FloatTag> {
+public class ThirstHandler implements INBTSerializable<CompoundTag> {
     private float thirst = 20.0F;
+    public static final float MAX_THIRST = 20.0F;
+    public static final float MIN_THIRST = 0.0F;
 
     public float getThirst() {
         return thirst;
     }
 
     public void setThirst(float thirst) {
-        this.thirst = thirst;
+        this.thirst = Math.min(MAX_THIRST, Math.max(MIN_THIRST, thirst));
     }
 
     public void addThirst(float amount) {
-        this.thirst = Math.min(20.0F, this.thirst + amount);
+        setThirst(this.thirst + amount);
     }
 
     public void removeThirst(float amount) {
-        this.thirst = Math.max(0.0F, this.thirst - amount);
+        setThirst(this.thirst - amount);
     }
 
     @Override
-    public FloatTag serializeNBT() {
-        return FloatTag.valueOf(thirst);
+    public CompoundTag serializeNBT() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.putFloat("thirst", thirst);
+        return nbt;
     }
 
     @Override
-    public void deserializeNBT(FloatTag nbt) {
-        this.thirst = nbt.getAsFloat();
+    public void deserializeNBT(CompoundTag nbt) {
+        this.thirst = nbt.getFloat("thirst");
     }
 }

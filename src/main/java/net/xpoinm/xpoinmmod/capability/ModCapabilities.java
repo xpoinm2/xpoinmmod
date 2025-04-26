@@ -18,11 +18,11 @@ import net.xpoinm.xpoinmmod.Xpoinmmod;
 
 @Mod.EventBusSubscriber(modid = Xpoinmmod.MOD_ID)
 public class ModCapabilities {
-    public static final Capability<SicknessCapability> SICKNESS =
-            CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<SicknessCapability> SICKNESS = CapabilityManager.get(new CapabilityToken<>() {});
 
-    public static void register() {
-        // Современный способ регистрации capability (Forge 1.19+)
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(SicknessCapability.class);
     }
 
     @SubscribeEvent
@@ -30,15 +30,7 @@ public class ModCapabilities {
         if (event.getObject() instanceof Player) {
             event.addCapability(
                     new ResourceLocation(Xpoinmmod.MOD_ID, "sickness"),
-                    new ICapabilityProvider() {
-                        final LazyOptional<SicknessCapability> optional =
-                                LazyOptional.of(SicknessCapability::new);
-
-                        @Override
-                        public <T> LazyOptional<T> getCapability(Capability<T> cap, net.minecraft.core.Direction side) {
-                            return SICKNESS.orEmpty(cap, optional);
-                        }
-                    }
+                    new SicknessProvider()
             );
         }
     }
@@ -47,7 +39,7 @@ public class ModCapabilities {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             event.getOriginal().getCapability(SICKNESS).ifPresent(oldStore -> {
-                event.getEntity().getCapability(SICKNESS).ifPresent(newStore -> {
+                event.getPlayer().getCapability(SICKNESS).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
@@ -55,7 +47,7 @@ public class ModCapabilities {
     }
 
     public static void syncSickness(Player player, float sickness) {
-        if (!player.getCommandSenderWorld().isClientSide && player instanceof ServerPlayer serverPlayer) {
+        if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             NetworkHandler.INSTANCE.send(
                     PacketDistributor.PLAYER.with(() -> serverPlayer),
                     new SicknessSyncPacket(sickness)
