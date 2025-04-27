@@ -4,8 +4,7 @@ license="MIT License"
 
 [[mods]]
 modId="xpoinmmod"
-# Указываем версию явно или через gradle.properties
-version="${mod_version}"
+version="1.0"
 displayName="Xpoinm Mod"
 logoFile="examplemod.png"
 credits="Thanks for this example mod goes to Java"

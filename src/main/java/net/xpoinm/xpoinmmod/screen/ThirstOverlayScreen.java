@@ -25,7 +25,7 @@ public class ThirstOverlayScreen extends Screen {
         int x = (this.width - 256) / 2;
         int y = (this.height - 256) / 2;
 
-        // Проверка на null для minecraft
+
         if (this.minecraft != null) {
             this.addRenderableWidget(new ExtendedButton(
                     x + 10, y + 230, 100, 20,
@@ -43,11 +43,11 @@ public class ThirstOverlayScreen extends Screen {
         int y = (this.height - 256) / 2;
         this.blit(poseStack, x, y, 0, 0, 256, 256);
 
-        // Проверки на null для minecraft и игрока
+
         if (this.minecraft != null && this.minecraft.player != null) {
             Player player = this.minecraft.player;
 
-            // Использование ModCapabilities вместо Provider'ов
+
             float thirstLevel = Objects.requireNonNull(
                     player.getCapability(ModCapabilities.THIRST_CAPABILITY).orElse(null)
             ).getThirst();
@@ -60,7 +60,7 @@ public class ThirstOverlayScreen extends Screen {
                     player.getCapability(ModCapabilities.FATIGUE_CAPABILITY).orElse(null)
             ).getFatigue();
 
-            // Отрисовка шкал
+
             this.blit(poseStack, x + 10, y + 10, 0, 256, (int) (thirstLevel * 10) * 2, 10);
             this.blit(poseStack, x + 10, y + 30, 0, 266, (int) (diseaseLevel * 10) * 2, 10);
             this.blit(poseStack, x + 10, y + 50, 0, 276, (int) (fatigueLevel * 10) * 2, 10);

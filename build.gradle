@@ -1,20 +1,31 @@
 plugins {
     id 'eclipse'
-    id 'idea'
-    id 'net.minecraftforge.gradle' version '[5.1,6.2)' // Для Forge 1.19
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-version = '1.0'
+version = "${mod_version}"
 group = 'net.xpoinm.xpoinmmod'
 archivesBaseName = 'xpoinmmod'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17) // Java 17 для 1.19
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'official', version: '1.19' // Версия маппингов
+    mappings channel: 'official', version: "${minecraft_version}"
 
     runs {
         client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods {
+                xpoinmmod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
@@ -28,32 +39,22 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19-41.1.0' // Точная версия Forge
-    implementation fg.deobf("net.minecraftforge:forge:1.19-41.1.0")
-    compileOnly "org.jetbrains:annotations:23.0.0"
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-processResources {
-    inputs.property 'version', version
-
-    filesMatching(['META-INF/mods.toml']) {
-        expand 'version': version
-    }
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 }
 
 jar {
     manifest {
         attributes([
                 "Specification-Title": "xpoinmmod",
-                "Specification-Vendor": "xpoinm",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
-                "Implementation-Version": version,
-                "Implementation-Vendor": "xpoinm"
+                "Implementation-Version": project.jar.archiveVersion,
+                "Implementation-Vendor": "xpoinm",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }

@@ -15,33 +15,33 @@ public class ThirstOverlayPacket {
     private final float disease;
     private final float fatigue;
 
-    // Конструктор для отправки данных
+
     public ThirstOverlayPacket(float thirst, float disease, float fatigue) {
         this.thirst = thirst;
         this.disease = disease;
         this.fatigue = fatigue;
     }
 
-    // Конструктор для десериализации из буфера
+
     public ThirstOverlayPacket(FriendlyByteBuf buf) {
         this.thirst = buf.readFloat();
         this.disease = buf.readFloat();
         this.fatigue = buf.readFloat();
     }
 
-    // Сериализация данных в буфер
+
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeFloat(thirst);
         buf.writeFloat(disease);
         buf.writeFloat(fatigue);
     }
 
-    // Десериализация данных из буфера
+
     public static ThirstOverlayPacket decode(FriendlyByteBuf buffer) {
         return new ThirstOverlayPacket(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
     }
 
-    // Обработка пакета на сервере
+
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             ServerPlayer player = ctx.get().getSender();
@@ -55,7 +55,7 @@ public class ThirstOverlayPacket {
         ctx.get().setPacketHandled(true);
     }
 
-    // Регистрация пакета
+
     public static void register(SimpleChannel channel) {
         channel.registerMessage(
                 0,
