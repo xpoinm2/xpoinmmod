@@ -28,9 +28,9 @@ public class Registration {
         );
     }
 
-    public static void init(IEventBus modEventBus) {
-        IEventBus modEventBus = get().getModEventBus();
-        ITEMS.register(modEventBus);
-        CONTAINERS.register(modEventBus); // Теперь работает
+    public static void init(IEventBus eventBus) {
+        // Удаляем дублирующееся объявление modEventBus
+        ModItems.ITEMS.register(eventBus);
+        ModBlocks.BLOCKS.register(eventBus);
     }
 }

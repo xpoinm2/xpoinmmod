@@ -1,5 +1,7 @@
 {
-
-  "hud.xpoinmmod.sickness": "Sickness Level"
-
+  "itemGroup.xpoinmmod": "Xpoinm's Mod",
+  "gui.xpoinmmod.thirst_title": "Status Overview",
+  "gui.xpoinmmod.thirst": "Thirst: %d/%d",
+  "gui.xpoinmmod.fatigue": "Fatigue: %d/%d",
+  "gui.xpoinmmod.disease": "Disease Level: %d/%d"
 }

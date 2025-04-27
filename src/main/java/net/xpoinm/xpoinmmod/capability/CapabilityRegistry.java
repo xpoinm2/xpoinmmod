@@ -16,7 +16,7 @@ public class CapabilityRegistry {
         event.register(ThirstHandler.class);
         event.register(DiseaseHandler.class);
         event.register(FatigueHandler.class);
-        event.register(SicknessCapability.class);
+
     }
 
     @SubscribeEvent

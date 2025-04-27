@@ -5,7 +5,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.xpoinm.xpoinmmod.init.Registration;
 import net.xpoinm.xpoinmmod.network.NetworkHandler;
 
 @Mod(Xpoinmmod.MOD_ID)
@@ -14,13 +13,11 @@ public class Xpoinmmod {
 
     public Xpoinmmod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        Registration.init(modEventBus); // Теперь принимает IEventBus
+        modEventBus.addListener(this::commonSetup);
+        MinecraftForge.EVENT_BUS.register(this);
     }
-}
 
-    private void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            NetworkHandler.register(); // Регистрация пакетов
-        });
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(NetworkHandler::register);
     }
 }

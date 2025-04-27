@@ -6,20 +6,41 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.xpoinm.xpoinmmod.capability.ModCapabilities;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
 public class CustomFoodItem extends Item {
-    public CustomFoodItem(Properties properties) {
+    private final float thirstEffect;
+    private final float diseaseEffect;
+    private final float fatigueEffect;
+
+    public CustomFoodItem(Item.Properties properties, float thirst, float disease, float fatigue) {
         super(properties);
+        this.thirstEffect = thirst;
+        this.diseaseEffect = disease;
+        this.fatigueEffect = fatigue;
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+    @Nonnull
+    public ItemStack finishUsingItem(
+            @Nonnull ItemStack stack,
+            @Nonnull Level level,
+            @Nonnull LivingEntity entity
+    ) {
         stack = super.finishUsingItem(stack, level, entity);
 
         if (!level.isClientSide && entity instanceof Player player) {
-            player.getCapability(ModCapabilities.SICKNESS).ifPresent(sickness -> {
-                sickness.addSickness(player, 5f);
-            });
+            player.getCapability(ModCapabilities.THIRST_CAPABILITY).ifPresent(cap ->
+                    cap.setThirst(cap.getThirst() + thirstEffect)
+            );
+            player.getCapability(ModCapabilities.DISEASE_CAPABILITY).ifPresent(cap ->
+                    cap.setDisease(cap.getDisease() + diseaseEffect)
+            );
+            player.getCapability(ModCapabilities.FATIGUE_CAPABILITY).ifPresent(cap ->
+                    cap.setFatigue(cap.getFatigue() + fatigueEffect)
+            );
         }
 
         return stack;

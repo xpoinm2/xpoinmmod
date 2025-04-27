@@ -10,3 +10,4 @@ public class ModItems {
 
     // Другие предметы...
 }
+

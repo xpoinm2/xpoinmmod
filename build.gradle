@@ -29,6 +29,8 @@ minecraft {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19-41.1.0' // Точная версия Forge
+    implementation fg.deobf("net.minecraftforge:forge:1.19-41.1.0")
+    compileOnly "org.jetbrains:annotations:23.0.0"
 }
 
 tasks.withType(JavaCompile).configureEach {

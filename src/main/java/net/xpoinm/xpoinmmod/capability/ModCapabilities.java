@@ -1,45 +1,47 @@
 package net.xpoinm.xpoinmmod.capability;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.capabilities.*;
-import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
-import net.xpoinm.xpoinmmod.network.NetworkHandler;
-import net.xpoinm.xpoinmmod.network.SicknessSyncPacket;
 import net.xpoinm.xpoinmmod.Xpoinmmod;
 
-@Mod.EventBusSubscriber(modid = Xpoinmmod.MOD_ID)
+@Mod.EventBusSubscriber(modid = Xpoinmmod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModCapabilities {
-    public static final Capability<SicknessCapability> SICKNESS = CapabilityManager.get(new CapabilityToken<>() {});
+    // Объявление возможностей через CapabilityToken
+    public static final Capability<ThirstHandler> THIRST_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<FatigueHandler> FATIGUE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<DiseaseHandler> DISEASE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
+    // Регистрация возможностей
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(SicknessCapability.class);
+        event.register(ThirstHandler.class);
+        event.register(FatigueHandler.class);
+        event.register(DiseaseHandler.class);
     }
 
+    // Прикрепление возможностей к игроку
     @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        event.getOriginal().getCapability(SICKNESS).ifPresent(oldStore -> {
-            event.getEntity().getCapability(SICKNESS).ifPresent(newStore -> {
-                newStore.copyFrom(oldStore);
-                syncSickness(event.getEntity(), newStore.getSickness()); // Добавлена синхронизация
-            });
-        });
-    }
-
-    public static void syncSickness(Player player, float sickness) {
-        if (!player.getLevel().isClientSide && player instanceof ServerPlayer serverPlayer) {
-            NetworkHandler.INSTANCE.send(
-                    PacketDistributor.PLAYER.with(() -> serverPlayer),
-                    new SicknessSyncPacket(sickness)
+    public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof Player) {
+            event.addCapability(
+                    new ResourceLocation(Xpoinmmod.MOD_ID, "thirst_data"),
+                    new ThirstProvider()
+            );
+            event.addCapability(
+                    new ResourceLocation(Xpoinmmod.MOD_ID, "fatigue_data"),
+                    new FatigueProvider()
+            );
+            event.addCapability(
+                    new ResourceLocation(Xpoinmmod.MOD_ID, "disease_data"),
+                    new DiseaseProvider()
             );
         }
     }
